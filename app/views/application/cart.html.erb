@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col">
+    <h3>Your cart</h3>
+
+  </div>
+  <div class="col">
+    <h3>Available products</h3>
+    <ul class="list-group">
+      <% @all_products.each do |product| %>
+        <li class="list-group-item">
+          <%= product.name %>
+          <%= number_to_currency product.price %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
