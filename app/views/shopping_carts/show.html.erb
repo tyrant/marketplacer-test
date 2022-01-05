@@ -2,12 +2,31 @@
   <div class="col">
     <h3>Your cart</h3>
     <ul class="list-group">
-      <% @shopping_cart.cart_items %>
+      <% @shopping_cart.cart_items.each do |cart_item| %>
         <li class="list-group-item">
+          <%= cart_item.product.name %>
+          (<%= cart_item.number %>)
 
+          <%= form_with url: shopping_cart_cart_item_decrement_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
+            <%= f.submit '-', class: 'btn btn-secondary btn-sm' %>
+          <% end %>
+          /
+          <%= form_with url: shopping_cart_cart_item_increment_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
+            <%= f.submit '+', class: 'btn btn-secondary btn-sm' %>
+          <% end %>
+
+          <%= number_to_currency cart_item.product.price * cart_item.number %>
+
+          <%= form_with url: shopping_cart_cart_item_path(@shopping_cart, cart_item), method: 'delete', class: 'd-inline' do |f| %>
+            <%= f.submit 'x', class: 'btn btn-danger btn-sm' %>
+          <% end %>
         </li>
       <% end %>
     </ul>
+    <h4>Promotions</h4>
+
+    <h4>Total</h4>
+    
   </div>
   <div class="col">
     <h3>Available products</h3>
@@ -16,9 +35,11 @@
         <li class="list-group-item">
           <%= product.name %>
           <%= number_to_currency product.price %>
-          <% form_with model: CartItem.new do |f| %>
-            <%= f.submit "Add to cart" %>
+          <%= form_with url: shopping_cart_cart_items_path(@shopping_cart) do |f| %>
+            <%= f.hidden_field :product_id, value: product.id %>
+            <%= f.submit "Add to cart", class: 'btn btn-primary' %>
           <% end %>
+          
         </li>
       <% end %>
     </ul>

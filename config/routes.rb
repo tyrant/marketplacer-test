@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get "cart" => "application#cart"
 
   resources :shopping_carts, only: :show do
-    resources :cart_items, only: [:create, :update, :destroy]
+    resources :cart_items, only: [:create, :destroy] do
+      patch :increment
+      patch :decrement
+    end
   end
 end
