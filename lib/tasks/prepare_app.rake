@@ -1,5 +1,5 @@
 desc "Prepare app before anything else happens"
-task prepare_app: :enviroment do
+task prepare_app: :environment do
   Rake::Task['build_shopping_cart'].invoke
   Rake::Task['load_products_json'].invoke
 end
@@ -9,6 +9,7 @@ desc "Ensure at least one shopping cart object exists."
 task build_shopping_cart: :environment do
   if ShoppingCart.count == 0
     ShoppingCart.create!
+    puts "Created shopping cart"
   end
 end
 
