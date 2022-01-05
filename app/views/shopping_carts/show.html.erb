@@ -15,7 +15,7 @@
             <%= f.submit '+', class: 'btn btn-secondary btn-sm' %>
           <% end %>
 
-          <%= number_to_currency cart_item.product.price * cart_item.number %>
+            <%= number_to_currency cart_item.price %>
 
           <%= form_with url: shopping_cart_cart_item_path(@shopping_cart, cart_item), method: 'delete', class: 'd-inline' do |f| %>
             <%= f.submit 'x', class: 'btn btn-danger btn-sm' %>

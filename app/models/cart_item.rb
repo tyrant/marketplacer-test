@@ -8,4 +8,8 @@ class CartItem < ApplicationRecord
       only_integer: true,
       greater_than: 0
     }
+
+  def price
+    @price ||= product.price * number
+  end
 end
