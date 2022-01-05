@@ -1,11 +1,7 @@
 class ApplicationController < ActionController::Base
 
   def index
-    redirect_to "/cart"
-  end
-
-  def cart
-    @all_products = Product.all
+    redirect_to shopping_cart_path(ShoppingCart.order('id desc').first)
   end
 
 end

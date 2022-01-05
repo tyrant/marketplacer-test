@@ -1,7 +1,13 @@
-<div class="row">
+  <div class="row">
   <div class="col">
     <h3>Your cart</h3>
+    <ul class="list-group">
+      <% @shopping_cart.cart_items %>
+        <li class="list-group-item">
 
+        </li>
+      <% end %>
+    </ul>
   </div>
   <div class="col">
     <h3>Available products</h3>
@@ -10,6 +16,9 @@
         <li class="list-group-item">
           <%= product.name %>
           <%= number_to_currency product.price %>
+          <% form_with model: CartItem.new do |f| %>
+            <%= f.submit "Add to cart" %>
+          <% end %>
         </li>
       <% end %>
     </ul>

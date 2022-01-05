@@ -5,4 +5,8 @@ Rails.application.routes.draw do
   root "application#index"
 
   get "cart" => "application#cart"
+
+  resources :shopping_carts, only: :show do
+    resources :cart_items, only: [:create, :update, :destroy]
+  end
 end
