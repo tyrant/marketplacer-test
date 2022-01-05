@@ -11,6 +11,8 @@ class CartItemsController < ApplicationController
         product_id: params[:product_id]
       )
     @cart_item.save!
+
+    redirect_to @shopping_cart
   end
 
 
@@ -18,6 +20,8 @@ class CartItemsController < ApplicationController
   def increment
     @cart_item.number += 1
     @cart_item.save!
+
+    redirect_to @shopping_cart
   end
 
 
@@ -25,12 +29,16 @@ class CartItemsController < ApplicationController
   def decrement
     @cart_item.number -= 1
     @cart_item.save!
+
+    redirect_to @shopping_cart
   end
 
 
   # PATCH /shopping_carts/:shopping_cart_id/cart_items/:cart_item_id
   def destroy
     @cart_item.destroy
+
+    redirect_to @shopping_cart
   end
 
 
