@@ -51,7 +51,7 @@ class CartItemsController < ApplicationController
 
 
   def _load_cart_item
-    @cart_item = @shopping_cart.cart_items.find(params[:id])
+    @cart_item = @shopping_cart.cart_items.find(params[:id] || params[:cart_item_id])
   end
 
 
