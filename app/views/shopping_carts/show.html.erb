@@ -1,45 +1,70 @@
-  <div class="row">
+<div class="row">
   <div class="col">
+
     <h3>Your cart</h3>
     <ul class="list-group">
-      <% @shopping_cart.cart_items.each do |cart_item| %>
-        <li class="list-group-item">
-          <%= cart_item.product.name %>
-          (<%= cart_item.number %>)
+      <% if @shopping_cart.cart_items.length > 0 %>
+        <% @shopping_cart.cart_items.each do |cart_item| %>
+          <li class="list-group-item">
+            <%= cart_item.product.name %>
+            (<%= cart_item.number %>)
 
-          <%= form_with url: shopping_cart_cart_item_decrement_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
-            <%= f.submit '-', class: 'btn btn-secondary btn-sm' %>
-          <% end %>
-          /
-          <%= form_with url: shopping_cart_cart_item_increment_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
-            <%= f.submit '+', class: 'btn btn-secondary btn-sm' %>
-          <% end %>
+            <%= form_with url: shopping_cart_cart_item_decrement_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
+              <%= f.submit '-', class: 'btn btn-secondary btn-sm' %>
+            <% end %>
+            /
+            <%= form_with url: shopping_cart_cart_item_increment_path(@shopping_cart, cart_item), method: 'patch', class: 'd-inline' do |f| %>
+              <%= f.submit '+', class: 'btn btn-secondary btn-sm' %>
+            <% end %>
 
             <%= number_to_currency cart_item.price %>
 
-          <%= form_with url: shopping_cart_cart_item_path(@shopping_cart, cart_item), method: 'delete', class: 'd-inline' do |f| %>
-            <%= f.submit 'x', class: 'btn btn-danger btn-sm' %>
-          <% end %>
-        </li>
+            <%= form_with url: shopping_cart_cart_item_path(@shopping_cart, cart_item), method: 'delete', class: 'd-inline' do |f| %>
+              <%= f.submit 'x', class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="list-group-item">(No items yet - get buying!)</li>
       <% end %>
     </ul>
-    <h4>Promotions</h4>
 
-    <h4>Total</h4>
-    
+    <h4>Subtotal</h4>
+    <%= number_to_currency @shopping_cart.sum_cart_items_subtotals %>
+
+    <h4>Promotions applied</h4>
+    <ul class="list-group">
+      <% if @promotions_applied.length > 0 %>
+        <% @promotions_applied.each do |promotion| %>
+          <li class="list-group-item">
+            <%= number_to_currency promotion.threshold %>: <%= promotion.percentage %>% off
+          </li>
+        <% end %>
+      <% else %>
+        <li class="list-group-item">(No promotions yet - get buying!)</li>
+      <% end %>
+    </ul>
+
+    <h4>Total after promotional discounts</h4>
+    <%= number_to_currency @shopping_cart.total %>
+
   </div>
   <div class="col">
     <h3>Available products</h3>
     <ul class="list-group">
       <% @all_products.each do |product| %>
         <li class="list-group-item">
-          <%= product.name %>
+          <%= product.name %>:
           <%= number_to_currency product.price %>
-          <%= form_with url: shopping_cart_cart_items_path(@shopping_cart) do |f| %>
-            <%= f.hidden_field :product_id, value: product.id %>
-            <%= f.submit "Add to cart", class: 'btn btn-primary' %>
+
+          <% if @shopping_cart.include? product %>
+            <button type="button" class="btn btn-primary" disabled>Already in cart</button>
+          <% else %>
+            <%= form_with url: shopping_cart_cart_items_path(@shopping_cart), class: 'd-inline' do |f| %>
+              <%= f.hidden_field :product_id, value: product.id %>
+              <%= f.submit "Add to cart", class: 'btn btn-primary' %>
+            <% end %>
           <% end %>
-          
         </li>
       <% end %>
     </ul>
